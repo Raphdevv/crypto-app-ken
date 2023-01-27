@@ -21,7 +21,6 @@ class _MyHomePageState extends State<MyHomePage> {
             colors: [
               AppColors.primaryColor,
               AppColors.primaryColor,
-              AppColors.primaryColor,
               AppColors.primaryTwoColor,
             ],
           ),
