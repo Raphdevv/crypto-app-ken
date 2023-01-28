@@ -1,5 +1,7 @@
-import 'package:crypto_app/page/home_page.dart';
+import 'package:crypto_app/page/homepage/home_page.dart';
+import 'package:crypto_app/widget/bottom_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,13 +13,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Crypto',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ScreenUtilInit(
+      designSize: const Size(375, 667),
+      builder: (context, child) => MaterialApp(
+        title: 'Crypto',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+        ),
+        home: const BottomNav(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
