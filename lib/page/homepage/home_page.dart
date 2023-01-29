@@ -1,6 +1,7 @@
 import 'package:crypto_app/const/app_colors.dart';
 import 'package:crypto_app/page/homepage/widget_homepage/card.dart';
 import 'package:crypto_app/page/lessonpage/lessson_main_page.dart';
+import 'package:crypto_app/page/testpage/test_main_page.dart';
 import 'package:crypto_app/widget/template_bg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,7 +57,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 text: 'แบบทดสอบ',
                 colors: AppColors.whiteColor,
                 imgPath: 'assets/images/test.png',
-                voidCallback: () {},
+                voidCallback: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TestMainPage(),
+                    ),
+                  );
+                },
               ),
               SizedBox(
                 height: 20.h,

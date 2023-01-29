@@ -21,6 +21,16 @@ class _LessonMainPageState extends State<LessonMainPage> {
     'หัดวิเคราะห์กราฟทางเทคนิค',
     'รู้จักควบคุมความเสี่ยงและบริหารเงินลงทุน',
   ];
+
+  List<String> img = [
+    'assets/images/lesson/lessonone.png',
+    'assets/images/lesson/lessontwo.png',
+    'assets/images/lesson/lessonthree.png',
+    'assets/images/lesson/lessonfour.png',
+    'assets/images/lesson/lessonfive.png',
+    'assets/images/lesson/lessonsix.png',
+    'assets/images/lesson/lessonseven.png',
+  ];
   @override
   Widget build(BuildContext context) {
     return TemplageBg(
@@ -42,7 +52,7 @@ class _LessonMainPageState extends State<LessonMainPage> {
         body: GridView.builder(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 400,
-            childAspectRatio: 2 / 2,
+            childAspectRatio: 2 / 2.5,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
           ),
@@ -67,8 +77,20 @@ class _LessonMainPageState extends State<LessonMainPage> {
                           topic[index],
                           style: TextStyle(
                             color: AppColors.whiteColor,
-                            fontSize: 24.sp,
+                            fontSize: 18.sp,
                           ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                          20,
+                        ),
+                        child: Image.asset(
+                          img[index],
+                          width: index == 0 ? 400.w : 250.w,
                         ),
                       ),
                     ),
