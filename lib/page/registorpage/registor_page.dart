@@ -1,37 +1,30 @@
 import 'package:crypto_app/const/app_colors.dart';
-import 'package:crypto_app/page/loginpage/widget_login/textfield_login.dart';
-import 'package:crypto_app/page/registorpage/registor_page.dart';
-import 'package:crypto_app/widget/template_bg.dart';
+import 'package:crypto_app/page/registorpage/widget_registor/textfield_registor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import '../../widget/template_bg.dart';
+
+class RegistorPage extends StatefulWidget {
+  const RegistorPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegistorPage> createState() => _RegistorPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegistorPageState extends State<RegistorPage> {
   @override
   Widget build(BuildContext context) {
     return TemplageBg(
-      showbg: false,
+      showbg: true,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(
-              height: 10.h,
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Image.asset(
-                'assets/images/exchange.png',
-                height: 120.h,
-              ),
+              height: 0.01.h,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -46,17 +39,41 @@ class _LoginPageState extends State<LoginPage> {
                       EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                   child: Form(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextFieldLogin(
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: AppColors.whiteColor,
+                          ),
+                        ),
+                        TextFieldRegistor(
                           topic: 'อีเมล',
                           hint: 'กรุณากรอกอีเมล',
                         ),
                         SizedBox(
-                          height: 10.h,
+                          height: 5.h,
                         ),
-                        TextFieldLogin(
+                        TextFieldRegistor(
+                          topic: 'ชื่อผู้ใช้',
+                          hint: 'กรุณากรอกชื่อผู้ใช้',
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        TextFieldRegistor(
                           topic: 'รหัสผ่าน',
                           hint: 'กรุณากรอกรหัสผ่าน',
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        TextFieldRegistor(
+                          topic: 'ยืนยันรหัสผ่าน',
+                          hint: 'กรุณากรอกการยืนยันรหัสผ่าน',
                         ),
                         SizedBox(
                           height: 20.h,
@@ -73,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () {},
                             child: Text(
-                              'เข้าสู่ระบบ',
+                              'สมัครสมาชิก',
                               style: TextStyle(
                                 color: AppColors.primaryColor,
                                 fontSize: 18.sp,
@@ -91,38 +108,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(
-              height: 10.h,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'ยังไม่มีบัญชีผู้ใช้ใช่ไหม',
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 12.sp,
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RegistorPage(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'กดที่นี่',
-                    style: TextStyle(
-                      color: AppColors.whiteColor,
-                      fontSize: 12.sp,
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ),
-              ],
+              height: 0.01.h,
             ),
           ],
         ),
