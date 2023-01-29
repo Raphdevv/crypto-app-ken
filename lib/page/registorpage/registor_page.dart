@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_app/const/app_colors.dart';
+import 'package:crypto_app/dialog/loader.dart';
 import 'package:crypto_app/models/registor_model.dart';
 import 'package:crypto_app/page/registorpage/widget_registor/textfield_registor.dart';
 import 'package:crypto_app/services/bloc/registor_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -150,6 +154,7 @@ class _RegistorPageState extends State<RegistorPage> {
                                 _registorBloc.registor(
                                   _globalFormKey,
                                   registorModel,
+                                  context,
                                 );
                               },
                               child: Text(

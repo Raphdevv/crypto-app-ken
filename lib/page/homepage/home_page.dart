@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:crypto_app/const/app_colors.dart';
 import 'package:crypto_app/page/homepage/widget_homepage/card.dart';
 import 'package:crypto_app/page/lessonpage/lessson_main_page.dart';
+import 'package:crypto_app/page/loginpage/login_page.dart';
 import 'package:crypto_app/page/rankingpage/ranking_page.dart';
 import 'package:crypto_app/page/testpage/test_main_page.dart';
 import 'package:crypto_app/widget/template_bg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -31,6 +35,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                  log('ออกจากระบบ');
+                });
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                    (route) => false);
+              },
+              icon: const Icon(
+                Icons.logout,
+              ),
+            ),
+          ],
         ),
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(

@@ -8,5 +8,7 @@ class AppColors {
 
   static const overlayColor = Color(0xFF454C5E);
 
+  static const redColor = Color(0xFFD10000);
+
   static const primaryTwoColor = Color(0xFF1B2E69);
 }
