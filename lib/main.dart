@@ -1,4 +1,5 @@
 import 'package:crypto_app/page/homepage/home_page.dart';
+import 'package:crypto_app/page/loginpage/login_page.dart';
 import 'package:crypto_app/widget/bottom_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.deepPurple,
           fontFamily: 'Orbit',
         ),
-        home: const BottomNav(),
+        home: const LoginPage(),
       ),
     );
   }
