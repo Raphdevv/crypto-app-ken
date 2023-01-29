@@ -1,0 +1,3 @@
+class FireLogin {
+  checkLogin() {}
+}

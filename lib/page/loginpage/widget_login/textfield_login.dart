@@ -1,3 +1,4 @@
+import 'package:crypto_app/models/login_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,7 +7,19 @@ import '../../../const/app_colors.dart';
 class TextFieldLogin extends StatefulWidget {
   final String topic;
   final String hint;
-  const TextFieldLogin({super.key, required this.topic, required this.hint});
+  final TextEditingController textEditingController;
+  final GlobalKey<FormState> globalFormKey;
+  final LoginModel loginModel;
+  final bool check;
+  const TextFieldLogin({
+    super.key,
+    required this.topic,
+    required this.hint,
+    required this.textEditingController,
+    required this.globalFormKey,
+    required this.loginModel,
+    required this.check,
+  });
 
   @override
   State<TextFieldLogin> createState() => _TextFieldLoginState();
@@ -72,6 +85,38 @@ class _TextFieldLoginState extends State<TextFieldLogin> {
               borderRadius: BorderRadius.circular(20.r),
             ),
           ),
+          onSaved: (newValue) {
+            if (widget.topic == 'อีเมล') {
+              setState(() {
+                widget.loginModel.email = newValue!;
+              });
+            } else if (widget.topic == 'รหัสผ่าน') {
+              widget.loginModel.password = newValue!;
+            }
+          },
+          onChanged: (value) {
+            if (widget.check) {
+              widget.globalFormKey.currentState!.validate();
+            }
+          },
+          validator: (value) {
+            if (widget.topic == 'อีเมล') {
+              if (value == null || value.isEmpty) {
+                return 'กรุณากรอกอีเมล';
+              } else if (value.contains('@') == false) {
+                return 'กรุณากรอกรูปแบบอีเมลให้ถูกต้อง';
+              }
+              return null;
+            } else if (widget.topic == 'รหัสผ่าน') {
+              if (value == null || value.isEmpty) {
+                return 'กรุณากรอกรหัสผ่าน';
+              } else if (value.length < 6) {
+                return 'รหัสผ่านต้องมีมากกว่า 6 ตัวอักษร';
+              }
+              return null;
+            }
+            return null;
+          },
         ),
       ],
     );
