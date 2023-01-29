@@ -1,3 +1,4 @@
+import 'package:crypto_app/page/rankingpage/ranking_page.dart';
 import 'package:crypto_app/widget/bottom_nav.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -185,7 +186,14 @@ class PointDialog extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RankingPage(),
+                          ),
+                          (route) => false);
+                    },
                     child: const Text(
                       'กระดานคะแนน',
                       style: TextStyle(
