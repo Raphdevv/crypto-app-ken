@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_app/const/app_colors.dart';
 import 'package:crypto_app/page/testpage/testing/testing_page.dart';
 import 'package:crypto_app/widget/template_bg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,8 +14,13 @@ class TestMainPage extends StatefulWidget {
 }
 
 class _TestMainPageState extends State<TestMainPage> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final CollectionReference _userReference =
+      FirebaseFirestore.instance.collection('Users');
+
   @override
   Widget build(BuildContext context) {
+    String userId = firebaseAuth.currentUser!.uid;
     return TemplageBg(
       showbg: false,
       child: Scaffold(
@@ -28,6 +35,14 @@ class _TestMainPageState extends State<TestMainPage> {
             color: AppColors.yellowColor,
             onPressed: () => Navigator.pop(context),
           ),
+          title: FutureBuilder(
+              future: _userReference.doc(userId).get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Text('คะแนนปัจจุบัน : ${snapshot.data!['userPoint']}');
+                }
+                return const Text('คะแนนปัจจุบัน : 0');
+              }),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
