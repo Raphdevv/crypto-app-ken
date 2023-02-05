@@ -98,8 +98,7 @@ class _LessonMainPageState extends State<LessonMainPage> {
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot item = items[index];
-                  QueryDocumentSnapshot<Object?> itemIndex =
-                      snapshot.data!.docs[index];
+
                   return Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -157,7 +156,7 @@ class _LessonMainPageState extends State<LessonMainPage> {
                                       return FractionallySizedBox(
                                         heightFactor: 0.95,
                                         child: BottomSheetLesson(
-                                          item: itemIndex,
+                                          item: item,
                                         ),
                                       );
                                     },

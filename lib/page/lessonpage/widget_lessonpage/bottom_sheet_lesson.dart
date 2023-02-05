@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomSheetLesson extends StatelessWidget {
-  final QueryDocumentSnapshot<Object?> item;
+  final DocumentSnapshot item;
   const BottomSheetLesson({super.key, required this.item});
 
   @override
