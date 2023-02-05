@@ -76,11 +76,14 @@ class BottomSheetLesson extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
-              child: Text(
-                item['content'],
-                textAlign: TextAlign.justify,
-                style: const TextStyle(
-                  color: AppColors.whiteColor,
+              child: InteractiveViewer(
+                clipBehavior: Clip.none,
+                child: Text(
+                  item['content'],
+                  textAlign: TextAlign.justify,
+                  style: const TextStyle(
+                    color: AppColors.whiteColor,
+                  ),
                 ),
               ),
             ),

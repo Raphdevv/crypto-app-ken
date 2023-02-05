@@ -23,7 +23,7 @@ class LoginBloc {
               gravity: ToastGravity.BOTTOM,
               toastLength: Toast.LENGTH_SHORT,
               backgroundColor: AppColors.greenColor,
-              textColor: AppColors.primaryColor);
+              textColor: AppColors.whiteColor);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -37,7 +37,7 @@ class LoginBloc {
             gravity: ToastGravity.BOTTOM,
             toastLength: Toast.LENGTH_SHORT,
             backgroundColor: AppColors.redColor,
-            textColor: AppColors.primaryColor,
+            textColor: AppColors.whiteColor,
           );
         }
       });

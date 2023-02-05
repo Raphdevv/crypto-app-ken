@@ -71,14 +71,10 @@ class _LessonMainPageState extends State<LessonMainPage> {
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
-                  child: Text('No Data...'),
+                  child: Text('ไม่มีบทเรียนและเนื้อหา'),
                 );
               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.whiteColor,
-                  ),
-                );
+                return Container();
               }
               List<DocumentSnapshot> items = snapshot.data!.docs;
               if (search.isNotEmpty) {

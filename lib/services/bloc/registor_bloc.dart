@@ -25,13 +25,21 @@ class RegistorBloc {
               gravity: ToastGravity.BOTTOM,
               toastLength: Toast.LENGTH_SHORT,
               backgroundColor: AppColors.greenColor,
-              textColor: AppColors.primaryColor);
+              textColor: AppColors.whiteColor);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => const BottomNav(),
             ),
             (route) => false,
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: value,
+            gravity: ToastGravity.BOTTOM,
+            toastLength: Toast.LENGTH_SHORT,
+            backgroundColor: AppColors.redColor,
+            textColor: AppColors.whiteColor,
           );
         }
       });

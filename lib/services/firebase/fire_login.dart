@@ -19,8 +19,9 @@ class FireLogin {
       return message;
     } on FirebaseAuthException catch (e) {
       log(e.message!);
-      if (e.message == 'wrong-password') {
-        message = 'รหัสผ่านไม่ถูกต้อง';
+      if (e.message ==
+          'The password is invalid or the user does not have a password.') {
+        message = 'รหัสผ่านไม่ถูกต้องหรือผู้ใช้ไม่มีรหัสผ่าน';
       } else if (e.message == 'user-not-found') {
         message = "ไม่พบบัญชีผู้ใช้นี้";
       } else if (e.message ==

@@ -32,7 +32,11 @@ class FireRegistor {
       return message;
     } on FirebaseAuthException catch (e) {
       log(e.message!);
-      return e.message!;
+      if (e.message ==
+          'The email address is already in use by another account.') {
+        message = 'อีเมลนี้ถูกใช้งานแล้ว';
+      }
+      return message;
     }
   }
 }

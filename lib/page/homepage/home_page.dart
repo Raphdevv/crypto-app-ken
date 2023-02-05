@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:crypto_app/const/app_colors.dart';
+import 'package:crypto_app/dialog/logout_dialog.dart';
 import 'package:crypto_app/page/homepage/widget_homepage/card.dart';
 import 'package:crypto_app/page/lessonpage/lessson_main_page.dart';
 import 'package:crypto_app/page/loginpage/login_page.dart';
@@ -10,6 +11,7 @@ import 'package:crypto_app/widget/template_bg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -38,15 +40,24 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: [
             IconButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut().then((value) {
-                  log('ออกจากระบบ');
+                DialogLogout(context: context).showDialogLogout(logout: () {
+                  FirebaseAuth.instance.signOut().then((value) {
+                    Fluttertoast.showToast(
+                        msg: 'ออกจากระบบ',
+                        gravity: ToastGravity.BOTTOM,
+                        toastLength: Toast.LENGTH_SHORT,
+                        backgroundColor: AppColors.overlayColor,
+                        textColor: AppColors.whiteColor);
+                  });
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                      (route) => false);
+                }, cancel: () {
+                  Navigator.pop(context);
                 });
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
-                    ),
-                    (route) => false);
               },
               icon: const Icon(
                 Icons.logout,
