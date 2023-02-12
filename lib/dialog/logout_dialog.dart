@@ -73,7 +73,7 @@ class LogoutDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 100.w,
+                  width: 125.w,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -94,7 +94,7 @@ class LogoutDialog extends StatelessWidget {
                   width: 5.w,
                 ),
                 SizedBox(
-                  width: 100.w,
+                  width: 125.w,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.greenColor,
