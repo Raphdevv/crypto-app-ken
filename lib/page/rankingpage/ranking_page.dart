@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto_app/widget/bottom_nav.dart';
 import 'package:crypto_app/widget/template_bg.dart';
 import 'package:flutter/material.dart';
@@ -15,45 +16,12 @@ class RankingPage extends StatefulWidget {
 }
 
 class _RankingPageState extends State<RankingPage> {
-  List<Map<String, dynamic>> ranking = [
-    {'point': 5, 'username': 'นาย A'},
-    {'point': 15, 'username': 'นาย B'},
-    {'point': 9, 'username': 'นาย C'},
-  ];
-
-  List<Map<String, dynamic>> listCopy = [];
-  List<Map<String, dynamic>> _foundUser = [];
-
+  final CollectionReference _userReference =
+      FirebaseFirestore.instance.collection('Users');
+  String search = "";
   @override
   void initState() {
-    listCopy = List.of(ranking);
-    listCopy.sort((a, b) {
-      return (b['point']).compareTo(a['point']);
-    });
-    _foundUser = listCopy;
     super.initState();
-  }
-
-  _filter(String enterKey) {
-    List<Map<String, dynamic>> result = [];
-    if (enterKey.isEmpty) {
-      result = listCopy;
-    } else {
-      result = listCopy
-          .where((element) =>
-              element['username']
-                  .toString()
-                  .toLowerCase()
-                  .contains(enterKey.toLowerCase()) ||
-              element['point']
-                  .toString()
-                  .toLowerCase()
-                  .contains(enterKey.toLowerCase()))
-          .toList();
-    }
-    setState(() {
-      _foundUser = result;
-    });
   }
 
   @override
@@ -113,7 +81,11 @@ class _RankingPageState extends State<RankingPage> {
                       borderRadius: BorderRadius.circular(20.r),
                     ),
                   ),
-                  onChanged: (value) => _filter(value),
+                  onChanged: (value) {
+                    setState(() {
+                      search = value.toLowerCase();
+                    });
+                  },
                 ),
               ),
             ),
@@ -121,67 +93,102 @@ class _RankingPageState extends State<RankingPage> {
               height: 10.h,
             ),
             _headingTable(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _foundUser.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4.h),
-                    child: Container(
-                      width: double.infinity,
-                      color: index % 2 == 0
-                          ? AppColors.yellowColor
-                          : AppColors.overlayColor,
-                      child: Table(
-                        children: [
-                          TableRow(children: [
-                            Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                '${index + 1}',
-                                style: TextStyle(
-                                  color: index % 2 == 0
-                                      ? AppColors.primaryColor
-                                      : AppColors.whiteColor,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                _foundUser[index]['username'],
-                                style: TextStyle(
-                                  color: index % 2 == 0
-                                      ? AppColors.primaryColor
-                                      : AppColors.whiteColor,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                '${_foundUser[index]['point']}',
-                                style: TextStyle(
-                                  color: index % 2 == 0
-                                      ? AppColors.primaryColor
-                                      : AppColors.whiteColor,
-                                  fontSize: 16.sp,
-                                ),
-                              ),
-                            ),
-                          ]),
-                        ],
+            StreamBuilder<QuerySnapshot<Object?>>(
+                stream: _userReference
+                    .orderBy("userPoint", descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text('ไม่พบผู้ใช้'),
+                    );
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppColors.yellowColor,
+                        ),
                       ),
+                    );
+                  }
+                  List<DocumentSnapshot> items = snapshot.data!.docs;
+                  if (search.isNotEmpty) {
+                    items = items
+                        .where((element) =>
+                            element['username']
+                                .toString()
+                                .toLowerCase()
+                                .contains(search) ||
+                            element['userPoint']
+                                .toString()
+                                .toLowerCase()
+                                .contains(search))
+                        .toList();
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        DocumentSnapshot item = items[index];
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 4.h),
+                          child: Container(
+                            width: double.infinity,
+                            color: index % 2 == 0
+                                ? AppColors.yellowColor
+                                : AppColors.overlayColor,
+                            child: Table(
+                              children: [
+                                TableRow(children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      '${index + 1}',
+                                      style: TextStyle(
+                                        color: index % 2 == 0
+                                            ? AppColors.primaryColor
+                                            : AppColors.whiteColor,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      item['username'],
+                                      style: TextStyle(
+                                        color: index % 2 == 0
+                                            ? AppColors.primaryColor
+                                            : AppColors.whiteColor,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      '${item['userPoint']}',
+                                      style: TextStyle(
+                                        color: index % 2 == 0
+                                            ? AppColors.primaryColor
+                                            : AppColors.whiteColor,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   );
-                },
-              ),
-            )
+                })
           ],
         ),
       ),
