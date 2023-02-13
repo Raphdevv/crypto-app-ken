@@ -42,32 +42,41 @@ class BottomSheetLesson extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Colors.transparent,
-                        insetPadding: EdgeInsets.zero,
-                        contentPadding: EdgeInsets.zero,
-                        content: InteractiveViewer(
-                          clipBehavior: Clip.none,
-                          child: Image.network(
-                            item['image'],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+                onTap: item['image'].isNotEmpty
+                    ? () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: Colors.transparent,
+                              insetPadding: EdgeInsets.zero,
+                              contentPadding: EdgeInsets.zero,
+                              content: InteractiveViewer(
+                                clipBehavior: Clip.none,
+                                child: Image.network(
+                                  item['image'],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    : null,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(
                     20,
                   ),
-                  child: Image.network(
-                    item['image'],
-                  ),
+                  child: item['image'].isNotEmpty
+                      ? Image.network(
+                          item['image'],
+                        )
+                      : const Text(
+                          'ไม่มีรูป',
+                          style: TextStyle(
+                            color: AppColors.whiteColor,
+                          ),
+                        ),
                 ),
               ),
             ),

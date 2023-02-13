@@ -126,10 +126,17 @@ class _LessonMainPageState extends State<LessonMainPage> {
                               borderRadius: BorderRadius.circular(
                                 20,
                               ),
-                              child: Image.network(
-                                item['cover'],
-                                width: index == 0 ? 400.w : 250.w,
-                              ),
+                              child: item['cover'].isNotEmpty
+                                  ? Image.network(
+                                      item['cover'],
+                                      width: index == 0 ? 400.w : 250.w,
+                                    )
+                                  : const Text(
+                                      'ไม่มีรูป',
+                                      style: TextStyle(
+                                        color: AppColors.whiteColor,
+                                      ),
+                                    ),
                             ),
                           ),
                           Padding(
