@@ -121,6 +121,7 @@ class _TestInfoState extends State<TestInfo> {
                             s += element;
                           }
                           updatePoint.addAll({
+                            'userPoint2': s,
                             "point2": FieldValue.arrayUnion([s]),
                             "testinfo": FieldValue.arrayUnion([s]),
                           });

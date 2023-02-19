@@ -2,6 +2,7 @@ import 'package:crypto_app/const/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../page/aboutme/about_me_page.dart';
 import '../page/homepage/home_page.dart';
 
 class BottomNav extends StatefulWidget {
@@ -15,7 +16,7 @@ class _BottomNavState extends State<BottomNav> {
   int selectedIndex = 0;
   static const List<Widget> page = [
     MyHomePage(),
-    Text("About Me"),
+    AboutMe(),
   ];
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,8 @@ class FireRegistor {
         'username': registorModel.username,
         'email': registorModel.email,
         'password': registorModel.password,
+        'userPoint1': 0,
+        'userPoint2': 0,
         'testing': [],
         'testinfo': [],
         'point1': [],

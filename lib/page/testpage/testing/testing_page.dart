@@ -338,6 +338,7 @@ class _TestingPageState extends State<TestingPage>
                         sum += element;
                       }
                       updatePoint.addAll({
+                        'userPoint1': sum,
                         "point1": FieldValue.arrayUnion([sum]),
                         "testing": FieldValue.arrayUnion([sum]),
                       });
