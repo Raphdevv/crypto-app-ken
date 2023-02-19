@@ -23,7 +23,10 @@ class FireRegistor {
         'username': registorModel.username,
         'email': registorModel.email,
         'password': registorModel.password,
-        'userPoint': 0,
+        'testing': [],
+        'testinfo': [],
+        'point1': [],
+        'point2': [],
       });
       documentReference.set(users).then((value) {
         message = 'สร้างบัญชีสำเร็จ';

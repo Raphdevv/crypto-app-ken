@@ -27,13 +27,10 @@ class _TestingPageState extends State<TestingPage>
   bool checkTap = false;
   List<dynamic> test1 = [];
   List<dynamic> test2 = [];
-  List<dynamic> test3 = [];
   List<List<int>> sum1 = [];
   List<List<int>> sum2 = [];
-  List<List<int>> sum3 = [];
   List<List<int>> g1 = [];
   List<List<int>> g2 = [];
-  List<List<int>> g3 = [];
   final Stream<DocumentSnapshot<Map<String, dynamic>>> testing =
       FirebaseFirestore.instance.collection('Testing').doc('tests').snapshots();
 
@@ -46,15 +43,13 @@ class _TestingPageState extends State<TestingPage>
 
   @override
   void initState() {
-    tabController = TabController(vsync: this, length: 3);
+    tabController = TabController(vsync: this, length: 2);
     super.initState();
     for (var i = 0; i < 5; i++) {
       sum1.add([0]);
       sum2.add([0]);
-      sum3.add([0]);
       g1.add([0]);
       g2.add([0]);
-      g3.add([0]);
     }
   }
 
@@ -70,7 +65,7 @@ class _TestingPageState extends State<TestingPage>
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
-            'แบบทดสอบ',
+            'แบบทดสอบที่ 1',
             style: TextStyle(
               color: AppColors.whiteColor,
               fontSize: 24.sp,
@@ -112,9 +107,6 @@ class _TestingPageState extends State<TestingPage>
               Tab(
                 text: 'ส่วนที่2',
               ),
-              Tab(
-                text: 'ส่วนที่3',
-              ),
             ],
           ),
         ),
@@ -132,14 +124,12 @@ class _TestingPageState extends State<TestingPage>
               } else if (snapshot.data != null) {
                 test1 = snapshot.data!['q1'];
                 test2 = snapshot.data!['q2'];
-                test3 = snapshot.data!['q3'];
                 return TabBarView(
                   controller: tabController,
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
                     testViewOne(test1, test1.length),
                     testViewTwo(test2, test2.length),
-                    testViewThree(test3, test3.length)
                   ],
                 );
               }
@@ -331,13 +321,34 @@ class _TestingPageState extends State<TestingPage>
                         borderRadius: BorderRadius.circular(20.r),
                       ),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        tabController.index = 2;
+                    onPressed: () async {
+                      DialogShowLoading().showLoaderDialog(context);
+                      int sum = 0;
+                      String userId = firebaseAuth.currentUser!.uid;
+                      DocumentReference documentReference =
+                          _userReference.doc(userId);
+                      var temp1 = sum1.expand((x) => x).toList();
+                      var temp2 = sum2.expand((x) => x).toList();
+                      log('temp1 : ${temp1.toString()}');
+                      log('temp2 : ${temp2.toString()}');
+                      for (var element in temp1) {
+                        sum += element;
+                      }
+                      for (var element in temp2) {
+                        sum += element;
+                      }
+                      updatePoint.addAll({
+                        "point1": FieldValue.arrayUnion([sum]),
+                        "testing": FieldValue.arrayUnion([sum]),
+                      });
+                      await documentReference.update(updatePoint).then((value) {
+                        Navigator.pop(context);
+                        DialogCrypto(context: context)
+                            .showDialogPoint(text: sum.toString());
                       });
                     },
                     child: Text(
-                      'หน้าถัดไป',
+                      'ส่งแบบทดสอบ',
                       style: TextStyle(
                         color: AppColors.primaryColor,
                         fontSize: 18.sp,
@@ -393,146 +404,142 @@ class _TestingPageState extends State<TestingPage>
     );
   }
 
-  Widget testViewThree(List<dynamic> test, int length) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.overlayColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            test[index]['problem'],
-                            style: TextStyle(
-                                color: AppColors.whiteColor, fontSize: 18.sp),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          radioButtonViewThree(test[index], index, 0, 1),
-                          radioButtonViewThree(test[index], index, 1, 2),
-                          radioButtonViewThree(test[index], index, 2, 3),
-                          radioButtonViewThree(test[index], index, 3, 4),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          view3
-              ? SizedBox(
-                  height: 10.h,
-                )
-              : Container(),
-          view3
-              ? SizedBox(
-                  width: 280.w,
-                  height: 50.h,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.yellowColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                    ),
-                    onPressed: () async {
-                      DialogShowLoading().showLoaderDialog(context);
-                      int sum = 0;
-                      String userId = firebaseAuth.currentUser!.uid;
-                      DocumentReference documentReference =
-                          _userReference.doc(userId);
-                      var temp1 = sum1.expand((x) => x).toList();
-                      var temp2 = sum2.expand((x) => x).toList();
-                      var temp3 = sum3.expand((x) => x).toList();
-                      log('temp1 : ${temp1.toString()}');
-                      log('temp2 : ${temp2.toString()}');
-                      log('temp3 : ${temp3.toString()}');
-                      for (var element in temp1) {
-                        sum += element;
-                      }
-                      for (var element in temp2) {
-                        sum += element;
-                      }
-                      for (var element in temp3) {
-                        sum += element;
-                      }
-                      updatePoint.addAll({"userPoint": sum});
-                      await documentReference.update(updatePoint).then((value) {
-                        Navigator.pop(context);
-                        DialogCrypto(context: context)
-                            .showDialogPoint(text: sum.toString());
-                      });
-                    },
-                    child: Text(
-                      'ส่งแบบทดสอบ',
-                      style: TextStyle(
-                        color: AppColors.primaryColor,
-                        fontSize: 18.sp,
-                      ),
-                    ),
-                  ),
-                )
-              : Container(),
-          view3
-              ? SizedBox(
-                  height: 10.h,
-                )
-              : Container(),
-        ],
-      ),
-    );
-  }
+  // Widget testViewThree(List<dynamic> test, int length) {
+  //   return Scaffold(
+  //     backgroundColor: Colors.transparent,
+  //     body: Column(
+  //       children: [
+  //         Expanded(
+  //           child: ListView.builder(
+  //             itemCount: length,
+  //             itemBuilder: (context, index) {
+  //               return Padding(
+  //                 padding: const EdgeInsets.all(8.0),
+  //                 child: Container(
+  //                   width: double.infinity,
+  //                   decoration: BoxDecoration(
+  //                     color: AppColors.overlayColor,
+  //                     borderRadius: BorderRadius.circular(20),
+  //                   ),
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.all(20),
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           test[index]['problem'],
+  //                           style: TextStyle(
+  //                               color: AppColors.whiteColor, fontSize: 18.sp),
+  //                         ),
+  //                         SizedBox(
+  //                           height: 10.h,
+  //                         ),
+  //                         radioButtonViewThree(test[index], index, 0, 1),
+  //                         radioButtonViewThree(test[index], index, 1, 2),
+  //                         radioButtonViewThree(test[index], index, 2, 3),
+  //                         radioButtonViewThree(test[index], index, 3, 4),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //         view3
+  //             ? SizedBox(
+  //                 height: 10.h,
+  //               )
+  //             : Container(),
+  //         view3
+  //             ? SizedBox(
+  //                 width: 280.w,
+  //                 height: 50.h,
+  //                 child: ElevatedButton(
+  //                   style: ElevatedButton.styleFrom(
+  //                     backgroundColor: AppColors.yellowColor,
+  //                     shape: RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.circular(20.r),
+  //                     ),
+  //                   ),
+  //                   onPressed: () async {
+  //                     DialogShowLoading().showLoaderDialog(context);
+  //                     int sum = 0;
+  //                     String userId = firebaseAuth.currentUser!.uid;
+  //                     DocumentReference documentReference =
+  //                         _userReference.doc(userId);
+  //                     var temp1 = sum1.expand((x) => x).toList();
+  //                     var temp2 = sum2.expand((x) => x).toList();
+  //                     log('temp1 : ${temp1.toString()}');
+  //                     log('temp2 : ${temp2.toString()}');
+  //                     for (var element in temp1) {
+  //                       sum += element;
+  //                     }
+  //                     for (var element in temp2) {
+  //                       sum += element;
+  //                     }
 
-  Widget radioButtonViewThree(
-      Map<String, dynamic> text, int index1, int index2, int value) {
-    return ListTile(
-      title: Text(
-        text['Choices'][index2]['choice'],
-        style: const TextStyle(
-          color: AppColors.whiteColor,
-        ),
-      ),
-      leading: Radio(
-        fillColor: MaterialStateProperty.resolveWith((states) {
-          return AppColors.yellowColor;
-        }),
-        value: value,
-        groupValue: g3[index1][0],
-        onChanged: (value) {
-          if (index1 == 4) {
-            setState(() {
-              view3 = true;
-            });
-          }
-          int v = text['Choices'][index2]['point'];
-          setState(() {
-            g3[index1][0] = value!;
-            if (v == 1) {
-              sum3[index1][0] = v;
-              log(sum3.toString());
-            } else {
-              sum3[index1][0] = 0;
-              log(sum3.toString());
-            }
-          });
-        },
-      ),
-    );
-  }
+  //                     updatePoint.addAll({"userPoint": sum});
+  //                     await documentReference.update(updatePoint).then((value) {
+  //                       Navigator.pop(context);
+  //                       DialogCrypto(context: context)
+  //                           .showDialogPoint(text: sum.toString());
+  //                     });
+  //                   },
+  //                   child: Text(
+  //                     'ส่งแบบทดสอบ',
+  //                     style: TextStyle(
+  //                       color: AppColors.primaryColor,
+  //                       fontSize: 18.sp,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               )
+  //             : Container(),
+  //         view3
+  //             ? SizedBox(
+  //                 height: 10.h,
+  //               )
+  //             : Container(),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // Widget radioButtonViewThree(
+  //     Map<String, dynamic> text, int index1, int index2, int value) {
+  //   return ListTile(
+  //     title: Text(
+  //       text['Choices'][index2]['choice'],
+  //       style: const TextStyle(
+  //         color: AppColors.whiteColor,
+  //       ),
+  //     ),
+  //     leading: Radio(
+  //       fillColor: MaterialStateProperty.resolveWith((states) {
+  //         return AppColors.yellowColor;
+  //       }),
+  //       value: value,
+  //       groupValue: g3[index1][0],
+  //       onChanged: (value) {
+  //         if (index1 == 4) {
+  //           setState(() {
+  //             view3 = true;
+  //           });
+  //         }
+  //         int v = text['Choices'][index2]['point'];
+  //         setState(() {
+  //           g3[index1][0] = value!;
+  //           if (v == 1) {
+  //             sum3[index1][0] = v;
+  //             log(sum3.toString());
+  //           } else {
+  //             sum3[index1][0] = 0;
+  //             log(sum3.toString());
+  //           }
+  //         });
+  //       },
+  //     ),
+  //   );
+  // }
 }
