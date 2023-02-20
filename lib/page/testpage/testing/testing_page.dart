@@ -32,7 +32,7 @@ class _TestingPageState extends State<TestingPage>
   List<List<int>> g1 = [];
   List<List<int>> g2 = [];
   final Stream<DocumentSnapshot<Map<String, dynamic>>> testing =
-      FirebaseFirestore.instance.collection('Testing').doc('tests').snapshots();
+      FirebaseFirestore.instance.collection('Testing').doc('test').snapshots();
 
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -122,8 +122,20 @@ class _TestingPageState extends State<TestingPage>
                   ),
                 );
               } else if (snapshot.data != null) {
-                test1 = snapshot.data!['q1'];
-                test2 = snapshot.data!['q2'];
+                test1 = [
+                  snapshot.data!['c1'],
+                  snapshot.data!['c2'],
+                  snapshot.data!['c3'],
+                  snapshot.data!['c4'],
+                  snapshot.data!['c5']
+                ];
+                test2 = [
+                  snapshot.data!['c6'],
+                  snapshot.data!['c7'],
+                  snapshot.data!['c8'],
+                  snapshot.data!['c9'],
+                  snapshot.data!['c10']
+                ];
                 return TabBarView(
                   controller: tabController,
                   physics: const NeverScrollableScrollPhysics(),
